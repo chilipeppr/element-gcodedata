@@ -27,7 +27,7 @@ http.createServer(function(req, res) {
 
   var uri = url.parse(req.url).pathname;
   console.log("URL being requested:", uri);
-  
+
   if (uri == "/") {
 
     res.writeHead(200, {
@@ -55,10 +55,13 @@ http.createServer(function(req, res) {
 
   } 
   else if (uri == "/pushtogithub") {
-    
+
+      var url_parts = url.parse(req.url,true);
+      console.log(url_parts.query);
+
     console.log("/pushtogithub called");
     
-    var stdout = pushToGithubSync()
+    var stdout = pushToGithubSync(url_parts.query.message)
     
     var json = {
       success: true,
@@ -666,10 +669,12 @@ var generateWidgetDocs = function() {
       $(function() {
       
       function ajaxPushToGithub() {
+        var message = prompt("Please enter your push message", "");
         console.log("pushing to github...");
-        $('.ajax-results').removeClass('hidden').html("Pushing your changes to Github");
+          $('.ajax-results').removeClass('hidden').html("Pushing your changes to Github");
         $.ajax({
-          url: "pushtogithub"
+          url: "pushtogithub",
+          data: { message: message }
         })
         .done(function( data ) {
           if ( console && console.log ) {
@@ -1134,16 +1139,19 @@ var pushToGithub = function() {
   console.log("Pushed to github");
 }
 
-var pushToGithubSync = function() {
+var pushToGithubSync = function(message) {
   
   var proc = require('child_process');
+
+  if(! message)
+    message = "Made some changes to ChiliPeppr widget using Cloud9";
   
   // git add *
   // git commit -m "Made some changes to ChiliPeppr widget using Cloud9"
   // git push
   var stdout = "";
   stdout += "> git add *\n";
-  stdout += '> git commit -m "Made some changes to ChiliPeppr widget using Cloud9"\n';
+  stdout += '> git commit -m "' + message + '"\n';
   stdout += "> git push\n";
   stdout += proc.execSync('git add *; git commit -m "Made some changes to ChiliPeppr widget using Cloud9"; git push;', { encoding: 'utf8' });
   console.log("Pushed to github sync. Stdout:", stdout);
