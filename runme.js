@@ -13,6 +13,7 @@ var http = require('http'),
   url = require('url'),
   path = require('path'),
   fs = require('fs');
+var qs = require('querystring');
 
 var mimeTypes = {
   "html": "text/html",
@@ -55,27 +56,51 @@ http.createServer(function(req, res) {
 
   } 
   else if (uri == "/uploadscreenshot") {
-    console.log("screenshot being uploaded");
-    var data_url = req.body.imgBase64;
-    var matches = data_url.match(/^data:.+\/(.+);base64,(.*)$/);
-    var ext = matches[1];
-    var base64_data = matches[2];
-    var buffer = new Buffer(base64_data, 'base64');
-
-    fs.writeFile("screenshot1.png", buffer, function (err) {
-        //res.send('success');
-        var json = {
-          success: true,
-          desc: "Saved screenshot.png",
-          //log: stdout
-        }
-        
-        res.writeHead(200, {
-          'Content-Type': 'application/json'
+    console.log("screenshot being uploaded. ");
+    
+    if (req.method == 'POST') {
+        var body = '';
+        req.on('data', function (data) {
+            body += data;
+            // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
+            if (body.length > 1e6) { 
+                // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+                req.connection.destroy();
+            }
         });
-        res.end(JSON.stringify(json));
-        console.log('done uploading screenshot');
-    });
+        req.on('end', function () {
+
+            //console.log("body:", body);
+            var POST = qs.parse(body);
+            // use POST
+            console.log("done with POST:", POST);
+            var data_url = POST.imgBase64;
+            var matches = data_url.match(/.*?;base64,(.*)$/);
+            //var ext = matches[1];
+            var base64_data = matches[1];
+            var buffer = new Buffer(base64_data, 'base64');
+            console.log("about to write file...");
+            
+            fs.writeFile("screenshot.png", buffer,  function (err) {
+                if (err) throw err;
+                
+                //res.send('success');
+                var json = {
+                  success: true,
+                  desc: "Saved screenshot.png",
+                  //log: stdout
+                }
+                
+                res.writeHead(200, {
+                  'Content-Type': 'application/json'
+                });
+                res.end(JSON.stringify(json));
+                console.log('done uploading screenshot');
+            });
+
+        });
+    }
+    
   }
   else if (uri == "/pushtogithub") {
 
