@@ -889,8 +889,7 @@ var generateWidgetDocs = function() {
         Results
       </div>
       
-      Note: Paste Print screen or captured files here to attach
-      <br />
+      <p>Note: Paste Print screen or captured files here to attach</p>
       <div id="editor-box" class="target" contenteditable="true">
       </div>
       
