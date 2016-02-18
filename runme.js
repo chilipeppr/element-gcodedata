@@ -963,8 +963,8 @@ var generateWidgetDocs = function() {
         Results
       </div>
       
-      <p style="padding-top:20px;margin-bottom:5px;">Note: Paste image from clipboard here to generate screenshot of widget for docs.</p>
-      <button class="btn btn-xs btn-default btn-uploadscreenshot">Upload Screenshot</button>
+      <p style="padding-top:20px;">Note: Paste image from clipboard here to generate screenshot of widget for docs.</p>
+      <button class="btn btn-xs btn-default btn-uploadscreenshot" style="margin-bottom:5px;">Upload Screenshot</button>
       <div id="editor-box" class="target" contenteditable="true">
       </div>
       
