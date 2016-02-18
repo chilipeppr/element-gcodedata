@@ -885,11 +885,11 @@ var generateWidgetDocs = function() {
       <button class="btn btn-xs btn-default btn-pushtogithub">Push to Github</button>
       <button class="btn btn-xs btn-default btn-pullfromgithub">Pull from Github</button>
       <button class="btn btn-xs btn-default btn-mergetemplate">Merge the ChiliPeppr Template to this Repo</button>
-      <div class="hidden well ajax-results" xstyle="margin-bottom:0;">
+      <div class="hidden well ajax-results" style="margin-bottom:0;">
         Results
       </div>
       
-      <p>Note: Paste Print screen or captured files here to attach</p>
+      <p style="padding-top:20px;">Note: Paste Print screen or captured files here to attach</p>
       <div id="editor-box" class="target" contenteditable="true">
       </div>
       
