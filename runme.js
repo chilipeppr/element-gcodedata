@@ -54,6 +54,29 @@ http.createServer(function(req, res) {
     res.end(finalHtml);
 
   } 
+  else if (uri == "/uploadscreenshot") {
+    console.log("screenshot being uploaded");
+    var data_url = req.body.imgBase64;
+    var matches = data_url.match(/^data:.+\/(.+);base64,(.*)$/);
+    var ext = matches[1];
+    var base64_data = matches[2];
+    var buffer = new Buffer(base64_data, 'base64');
+
+    fs.writeFile("screenshot1.png", buffer, function (err) {
+        //res.send('success');
+        var json = {
+          success: true,
+          desc: "Saved screenshot.png",
+          //log: stdout
+        }
+        
+        res.writeHead(200, {
+          'Content-Type': 'application/json'
+        });
+        res.end(JSON.stringify(json));
+        console.log('done uploading screenshot');
+    });
+  }
   else if (uri == "/pushtogithub") {
 
       var url_parts = url.parse(req.url,true);
@@ -754,6 +777,25 @@ var generateWidgetDocs = function() {
         });
       }
       
+      function ajaxUploadScreenshot() {
+        //var canvas = document.getElementById('canvas' + index);
+        //var dataURL = canvas.toDataURL();
+        var dataURL = $('#editor-box').css('background-image');
+        console.log("ajaxUploadScreenshot...");
+        $('.ajax-results').removeClass('hidden').html("Uploading screenshot. ");
+        
+        $.ajax({
+            type: "POST",
+            url: "uploadscreenshot",
+            data: { 
+                imgBase64: dataURL
+            }
+        }).done(function(o) {
+            console.log('all_saved'); 
+        
+        });
+      }
+      
       // Created by STRd6
       // MIT License
       // jquery.paste_image_reader.js
@@ -867,6 +909,7 @@ var generateWidgetDocs = function() {
         $('.btn-pushtogithub').click(ajaxPushToGithub);
         $('.btn-pullfromgithub').click(ajaxPullFromGithub);
         $('.btn-mergetemplate').click(ajaxMergeFromCpTemplateRepo);
+        $('.btn-uploadscreenshot').click(ajaxUploadScreenshot);
         console.log("Init complete");
       }
       
@@ -890,6 +933,7 @@ var generateWidgetDocs = function() {
       </div>
       
       <p style="padding-top:20px;">Note: Paste image from clipboard here to generate screenshot of widget for docs.</p>
+      <button class="btn btn-xs btn-default btn-uploadscreenshot">Upload Screenshot</button>
       <div id="editor-box" class="target" contenteditable="true">
       </div>
       
