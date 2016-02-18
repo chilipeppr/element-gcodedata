@@ -815,9 +815,15 @@ var generateWidgetDocs = function() {
             data: { 
                 imgBase64: dataURL
             }
-        }).done(function(o) {
+        }).done(function(data) {
             console.log('all_saved'); 
-        
+            if (data && data.success) {
+              // success
+              $('.ajax-results').html(data.desc);
+            } else {
+              // error 
+              $('.ajax-results').html("<pre>ERROR:" + JSON.stringify(data, null, "\t") + "</pre>");
+            }
         });
       }
       
