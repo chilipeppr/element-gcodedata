@@ -104,8 +104,8 @@ http.createServer(function(req, res) {
   }
   else if (uri == "/pushtogithub") {
 
-      var url_parts = url.parse(req.url,true);
-      console.log(url_parts.query);
+    var url_parts = url.parse(req.url,true);
+    console.log(url_parts.query);
 
     console.log("/pushtogithub called");
     
@@ -1365,7 +1365,7 @@ var pushToGithubSync = function(message) {
   stdout += "> git add *\n";
   stdout += '> git commit -m "' + message + '"\n';
   stdout += "> git push\n";
-  stdout += proc.execSync('git add *; git commit -m "Made some changes to ChiliPeppr widget using Cloud9"; git push;', { encoding: 'utf8' });
+  stdout += proc.execSync('git add *; git commit -m "' + message + '"; git push;', { encoding: 'utf8' });
   console.log("Pushed to github sync. Stdout:", stdout);
   
   return stdout;
