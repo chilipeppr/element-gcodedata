@@ -781,7 +781,7 @@ var generateWidgetDocs = function() {
         //var canvas = document.getElementById('canvas' + index);
         //var dataURL = canvas.toDataURL();
         var dataURL = $('#editor-box').css('background-image');
-        console.log("ajaxUploadScreenshot...");
+        console.log("ajaxUploadScreenshot..., data:", dataURL);
         $('.ajax-results').removeClass('hidden').html("Uploading screenshot. ");
         
         $.ajax({
