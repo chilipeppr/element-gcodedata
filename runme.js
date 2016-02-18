@@ -889,7 +889,7 @@ var generateWidgetDocs = function() {
         Results
       </div>
       
-      <p style="padding-top:20px;">Note: Paste Print screen or captured files here to attach</p>
+      <p style="padding-top:20px;">Note: Paste image from clipboard here to generate screenshot of widget for docs.</p>
       <div id="editor-box" class="target" contenteditable="true">
       </div>
       
